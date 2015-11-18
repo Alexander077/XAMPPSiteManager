@@ -30,6 +30,7 @@ namespace XAMPPSiteManager
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAddNewSite));
 			this.label1 = new System.Windows.Forms.Label();
 			this.textBoxNewSiteDomainName = new System.Windows.Forms.TextBox();
 			this.buttonAddSite = new System.Windows.Forms.Button();
@@ -71,10 +72,11 @@ namespace XAMPPSiteManager
 			this.Controls.Add(this.textBoxNewSiteDomainName);
 			this.Controls.Add(this.label1);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.Name = "FormAddNewSite";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "AddNewSite";
+			this.Text = "Add New Site";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

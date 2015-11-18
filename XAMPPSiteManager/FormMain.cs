@@ -32,6 +32,32 @@ namespace XAMPPSiteManager
 			BuildExistingSiteList();
 		}
 
+		private bool CheckSettings()
+		{
+			if (_XAMPPInstallDir != "" &&
+			!Directory.Exists(_XAMPPInstallDir))
+			{
+				MessageBox.Show(this, "Provided XAMMP install dir is not exists", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			else
+			{
+				if (!Directory.Exists(_XAMPPWebRootPath))
+				{
+					MessageBox.Show(this, "Can't find XAMPP web root dir", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+
+				if (!File.Exists(_XAMPPApacheVhostsConfigFile))
+				{
+					MessageBox.Show(this, "Can't find XAMPP Apache virtual hosts config file", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+			}
+
+			return true;
+		}
+
 		public void BuildExistingSiteList()
 		{
 			listViewSites.Items.Clear();
@@ -39,25 +65,9 @@ namespace XAMPPSiteManager
 			_XAMPPWebRootPath = Path.Combine(_XAMPPInstallDir, "htdocs");
 			_XAMPPApacheVhostsConfigFile = Path.Combine(_XAMPPInstallDir, "apache\\conf\\extra\\httpd-vhosts.conf");
 
-			if (_XAMPPInstallDir != "" &&
-				!Directory.Exists(_XAMPPInstallDir))
+			if (!CheckSettings())
 			{
-				MessageBox.Show(this, "Provided XAMMP install dir is not exists", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
-			}
-			else
-			{
-				if (!Directory.Exists(_XAMPPWebRootPath))
-				{
-					MessageBox.Show(this, "Can't find XAMPP web root dir", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
-				}
-
-				if (!File.Exists(_XAMPPApacheVhostsConfigFile))
-				{
-					MessageBox.Show(this, "Can't find XAMPP Apache virtual hosts config file", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-					return;
-				}
 			}
 
 			_vhostsManager = new ApacheVhostsConfigManager(_XAMPPApacheVhostsConfigFile, _XAMPPWebRootPath);
@@ -81,6 +91,11 @@ namespace XAMPPSiteManager
 
 		private void buttonAddNewSite_Click(object sender, EventArgs e)
 		{
+			if (!CheckSettings())
+			{
+				return;
+			}
+
 			FormAddNewSite addSiteForm = new FormAddNewSite(_vhostsManager,_hostsManager,_XAMPPWebRootPath,_XAMPPInstallDir);
 			addSiteForm.ShowDialog(this);
 			BuildExistingSiteList();
