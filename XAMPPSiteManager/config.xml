@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<vHostsParseRegex>
+		<![CDATA[\r\n<VirtualHost[^>]+>\s*?ServerAdmin +?(?<serverAdmin>.+?)\r\n\s*?DocumentRoot +?"(?<documentRoot>.+?)"\r\n\s*?ServerName +?(?<serverName>.+?)\r\n\s*?ErrorLog +?"(?<errorLog>.+?)"\r\n\s*?CustomLog +?"(?<customLog>.+?)" ?(common)?\r\n</VirtualHost>]]>
+	</vHostsParseRegex>
+	<hostsParseRegex>
+		<![CDATA[\r\n(?<disabled>#*?)\s*?(?<ip>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s+(?<domainName>[^\s]+)\s*?]]>
+	</hostsParseRegex>
+	<newVHostsEntryTemplate>
+<![CDATA[
+<VirtualHost *:80>
+    ServerAdmin {domainName}@host.com
+    DocumentRoot "{XAMPPInstallDir}\{domainName}"
+    ServerName {domainName}
+    ErrorLog "logs/{domainName}-error.log"
+    CustomLog "logs/{domainName}-access.log" common
+</VirtualHost>]]>
+	</newVHostsEntryTemplate>
+
+	<newHostsEntryTemplate>
+<![CDATA[
+127.0.0.1	{domainName}]]>
+	</newHostsEntryTemplate>
+
+	<XAMPPInstallDir>c:\XAMPP</XAMPPInstallDir>
+
+	<XAMPPApacheStopFilePath>
+		<![CDATA[apache_stop.bat]]>
+	</XAMPPApacheStopFilePath>
+
+	<XAMPPApacheStartFilePath>
+		<![CDATA[apache\bin\httpd.exe]]>
+	</XAMPPApacheStartFilePath>
+
+</configuration>
